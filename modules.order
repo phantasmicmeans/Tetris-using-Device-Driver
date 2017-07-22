@@ -1,0 +1,3 @@
+kernel//home/csemad/Final/dot_matrix_driver.ko
+kernel//home/csemad/Final/push_switch_driver.ko
+kernel//home/csemad/Final/fpga_fnd_driver.ko
