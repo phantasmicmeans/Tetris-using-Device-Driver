@@ -19,14 +19,13 @@ public class StoryController {
 	@Autowired
 	StoryService storyService;
 
-
 	@HystrixCommand(commandKey = "story-service", fallbackMethod = "getAllStoryFallback")
 	@RequestMapping(value = "/story", method = RequestMethod.GET)
 	public ResponseEntity<List<Story>> getAllStory()
 	{
 		try{
-		    Optional<List<Story>> maybeAllStory = Optional.of(storyService.findAllStory());
-		    return new ResponseEntity<List<Story>>(maybeAllStory.get(), HttpStatus.OK);
+		    	Optional<List<Story>> maybeAllStory = Optional.of(storyService.findAllStory());
+		    	return new ResponseEntity<List<Story>>(maybeAllStory.get(), HttpStatus.OK);
         	}catch(Exception e)
         	{
             		return new ResponseEntity<List<Story>>(HttpStatus.NOT_FOUND);
@@ -61,4 +60,33 @@ public class StoryController {
         	}
         	return null;
     	}
+```
+
+```java
+public interface StoryService {
+	List<Story> findAllStory();
+	List<Story> findStoryById(String ID);
+	Boolean saveStory(Story story);
+	Boolean deleteStory(String ID);
+}
+```
+
+```java
+@Service("storyService")
+public class StoryServiceImpl implements StoryService {
+
+	private Logger logger = LoggerFactory.getLogger(this.getClass());
+
+	@Autowired
+	private StoryRepository storyRepository;
+	
+	@Override
+	public List<Story> findAllStory()
+	{
+		Optional<List<Story>> maybeStoryIter =
+			Optional.ofNullable(storyRepository.findAllStory(PageRequest.of(0,15)));
+			
+		return maybeStoryIter.get();
+	}
+}
 ```
