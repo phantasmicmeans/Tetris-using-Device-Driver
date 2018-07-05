@@ -61,6 +61,8 @@ public class StoryController {
         	return null;
     	}
 ```
+sdf
+sdf
 
 ```java
 public interface StoryService {
@@ -70,6 +72,8 @@ public interface StoryService {
 	Boolean deleteStory(String ID);
 }
 ```
+sdfs
+sdf
 
 ```java
 @Service("storyService")
@@ -87,6 +91,59 @@ public class StoryServiceImpl implements StoryService {
 			Optional.ofNullable(storyRepository.findAllStory(PageRequest.of(0,15)));
 			
 		return maybeStoryIter.get();
+	}
+}
+```
+
+sddsf
+sdf
+
+```java
+public interface StoryRepository extends CrudRepository<Story, String> {
+
+	@Query("SELECT s FROM Story s ORDER BY s.story_id DESC")
+	List<Story> findAllStory(Pageable pageable);
+	}
+```
+
+
+
+```java
+@Entity
+public class Story {
+
+	@Id
+	@GeneratedValue(strategy=GenerationType.AUTO)
+	private int story_id;
+	private String ID;
+	private String message;
+	
+	protected Story(){}
+	
+	public Story(String ID, String message)
+	{
+		this.ID=ID;
+		this.message=message;
+	}
+
+	public int getStory_id() {
+		return story_id;
+	}
+
+	public String getID() {
+		return ID;
+	}
+
+	public void setID(String iD) {
+		ID = iD;
+	}
+
+	public String getMessage() {
+		return message;
+	}
+
+	public void setMessage(String message) {
+		this.message = message;
 	}
 }
 ```
