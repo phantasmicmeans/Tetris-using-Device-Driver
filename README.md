@@ -1,16 +1,16 @@
 ```java
 public class StoryController {
-
 	
 	private final Logger logger = LoggerFactory.getLogger(this.getClass());
-  @Autowired
-  private DiscoveryClient discoveryClient;
+	@Autowired
 
-  @Bean
-  public RestTemplate restTemplate() {
-       return new RestTemplate();
-  }
-	@Value("${eureka.instance.instance-id}")
+	private DiscoveryClient discoveryClient;
+
+  	@Bean
+  	public RestTemplate restTemplate() {
+       		return new RestTemplate();
+  	}
+  	@Value("${eureka.instance.instance-id}")
 	String instance_id;
 	
 	@Autowired
@@ -27,37 +27,38 @@ public class StoryController {
 		try{
 		    Optional<List<Story>> maybeAllStory = Optional.of(storyService.findAllStory());
 		    return new ResponseEntity<List<Story>>(maybeAllStory.get(), HttpStatus.OK);
-        }catch(Exception e)
-        {
-            return new ResponseEntity<List<Story>>(HttpStatus.NOT_FOUND);
-        }
+        	}catch(Exception e)
+        	{
+            		return new ResponseEntity<List<Story>>(HttpStatus.NOT_FOUND);
+        	}
 	}
-    public ResponseEntity<List<Story>>  getAllStoryFallback()
-    {
-        try{
-
-            Optional<List<ServiceInstance>> maybeServiceInstance 
-                = Optional.of(this.discoveryClient.getInstances("story-service"));
+	
+    	public ResponseEntity<List<Story>>  getAllStoryFallback()
+    	{
+        	try{
+            		Optional<List<ServiceInstance>> maybeServiceInstance 
+                		= Optional.of(this.discoveryClient.getInstances("story-service"));
         
-            List<ServiceInstance> Instance 
-                = maybeServiceInstance.get().stream()
-                                            .filter(service -> 
-                                                    !instance_id.equals(service.getServiceId()))
-                                            .collect(Collectors.toList());
+            	List<ServiceInstance> Instance 
+                	= maybeServiceInstance.get().stream()
+                                            	.filter(service -> 
+                                                    	!instance_id.equals(service.getServiceId()))
+                                            	.collect(Collectors.toList());
 
-            ServiceInstance service = Instance.get(0);
+            	ServiceInstance service = Instance.get(0);
         
-            URI uri = URI.create(service.getHost() + ":" + service.getPort() + "/story");
+            	URI uri = URI.create(service.getHost() + ":" + service.getPort() + "/story");
 
-            ResponseEntity <List<Story>> rest =
-				    restTemplate.exchange(uri, HttpMethod.GET,null, new ParameterizedTypeReference<List<Story>>() {});
+            	ResponseEntity <List<Story>> rest =
+				    	restTemplate.exchange(uri, HttpMethod.GET,null, new
+					ParameterizedTypeReference<List<Story>>() {});
             
-            return new ResponseEntity<List<Story>>(rest.getBody(), HttpStatus.OK);
+            	return new ResponseEntity<List<Story>>(rest.getBody(), HttpStatus.OK);
 
-        }catch(Exception e)
-        {
+        	}catch(Exception e)
+        	{
 			  e.printStackTrace();
-        }
-        return null;
-    }
+        	}
+        	return null;
+    	}
 ```
