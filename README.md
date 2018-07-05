@@ -132,3 +132,45 @@ public class Story {
 	public void setMessage(String message) { this.message = message;}
 }
 ```
+sdf
+sdf
+sd
+fsd
+f
+
+```java
+
+private Convert<ServiceInstance, String> converter = (from) -> {
+		
+	return from.getHost()+":"+String.valueOf(from.getPort())+"/story";
+};
+	
+@FunctionalInterface
+interface Convert<F,T>{
+	
+	T convert(F from);
+}
+    public ResponseEntity<List<Story>>  getAllStoryFallback()
+    {
+        try{
+       
+            List<String> Instance
+                = this.discoveryClient.getInstances("story-service")
+                						.stream()
+                						.filter((service) -->
+									!instance_id.equals(service.getServiceId()))
+                						.map((service) -> converter.convert(service))
+                						.collect(Collectors.toList());
+            ResponseEntity <List<Story>> rest =
+				    restTemplate.exchange(URI.create(Instance.get(0)), HttpMethod.GET,null, new ParameterizedTypeReference<List<Story>>() {});
+            
+            return new ResponseEntity<List<Story>>(rest.getBody(), HttpStatus.OK);
+
+        }catch(Exception e)
+        {
+			e.printStackTrace();
+        }
+        
+        return null;
+    }
+```
