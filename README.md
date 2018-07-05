@@ -120,30 +120,15 @@ public class Story {
 	
 	protected Story(){}
 	
-	public Story(String ID, String message)
-	{
+	public Story(String ID, String message){
+	
 		this.ID=ID;
 		this.message=message;
 	}
-
-	public int getStory_id() {
-		return story_id;
-	}
-
-	public String getID() {
-		return ID;
-	}
-
-	public void setID(String iD) {
-		ID = iD;
-	}
-
-	public String getMessage() {
-		return message;
-	}
-
-	public void setMessage(String message) {
-		this.message = message;
-	}
+	public int getStory_id() { return story_id; }
+	public String getID() { return ID; }
+	public void setID(String ID) { ID = ID; }
+	public String getMessage() { return message; }
+	public void setMessage(String message) { this.message = message;}
 }
 ```
